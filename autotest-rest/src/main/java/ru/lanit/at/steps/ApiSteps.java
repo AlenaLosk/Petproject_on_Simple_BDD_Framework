@@ -1,7 +1,7 @@
 package ru.lanit.at.steps;
 
 import io.cucumber.datatable.DataTable;
-import io.cucumber.java.ru.И;
+import io.cucumber.java.ru.*;
 import io.qameta.allure.Allure;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,37 +25,37 @@ public class ApiSteps {
     private static final Logger LOG = LoggerFactory.getLogger(ApiSteps.class);
     private ApiRequest apiRequest;
 
-    @И("создать запрос")
+    @Пусть("создаем запрос")
     public void createRequest(RequestModel requestModel) {
         apiRequest = new ApiRequest(requestModel);
     }
 
-    @И("добавить header")
+    @И("добавляем header")
     public void addHeaders(DataTable dataTable) {
         Map<String, String> headers = new HashMap<>();
         dataTable.asLists().forEach(it -> headers.put(it.get(0), it.get(1)));
         apiRequest.setHeaders(headers);
     }
 
-    @И("добавить query параметры")
+    @И("добавляем query параметры")
     public void addQuery(DataTable dataTable) {
         Map<String, String> query = new HashMap<>();
         dataTable.asLists().forEach(it -> query.put(it.get(0), it.get(1)));
         apiRequest.setQuery(query);
     }
 
-    @И("отправить запрос")
+    @Когда("отправляем запрос")
     public void send() {
         apiRequest.sendRequest();
     }
 
-    @И("статус код {int}")
+    @Тогда("получаем статус код {int}")
     public void expectStatusCode(int code) {
         int actualStatusCode = apiRequest.getResponse().statusCode();
         Assert.assertEquals(actualStatusCode, code);
     }
 
-    @И("извлечь данные")
+    @Также("извлекаем данные")
     public void extractVariables(Map<String, String> vars) {
         String responseBody = apiRequest.getResponse().body().asPrettyString();
         vars.forEach((k, jsonPath) -> {
@@ -66,7 +66,7 @@ public class ApiSteps {
         });
     }
 
-    @И("сгенерировать переменные")
+    @Допустим("сгенерируем переменные")
     public void generateVariables(Map<String, String> table) {
         table.forEach((k, v) -> {
             String value = DataGenerator.generateValueByMask(replaceVarsIfPresent(v));
@@ -76,7 +76,7 @@ public class ApiSteps {
         });
     }
 
-    @И("создать контекстные переменные")
+    @Пусть("создадаем контекстные переменные")
     public void createContextVariables(Map<String, String> table) {
         table.forEach((k, v) -> {
             ContextHolder.put(k, v);
@@ -84,7 +84,7 @@ public class ApiSteps {
         });
     }
 
-    @И("сравнить значения")
+    @Ктомуже("сравниваем значения")
     public void compareVars(DataTable table) {
         table.asLists().forEach(it -> {
             String expect = replaceVarsIfPresent(it.get(0));
@@ -96,7 +96,7 @@ public class ApiSteps {
         });
     }
 
-    @И("подождать {int} сек")
+    @И("подождем {int} сек")
     public void waitSeconds(int timeout) {
         Sleep.pauseSec(timeout);
     }
