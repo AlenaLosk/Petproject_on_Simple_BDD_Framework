@@ -9,7 +9,7 @@ import org.testng.annotations.DataProvider;
         },
         features = "classpath:features",
         glue = {"steps", "hooks"},
-        tags = "@google"
+        tags = "@trello"
 )
 public class Runner extends AbstractTestNGCucumberTests {
 
